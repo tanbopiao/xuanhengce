@@ -1,4 +1,4 @@
-"""玄衡册（XUANHENGCE）算子骨架单测：名帖完整、桩位齐整、只增不覆盖。"""
+"""璇衡策（XUANHENGCE）算子单测：名帖完整、行为达标、只增不覆盖。"""
 import unittest
 
 from xuanhengce import Xuanhengce
@@ -15,13 +15,14 @@ class TestXuanhengce(unittest.TestCase):
         self.assertTrue(d["anchor"].startswith("Ω₀⊂⊙∞⊂Ω"))
         self.assertTrue(d["mingwen"])
 
-    def test_append_stub(self):
-        with self.assertRaises(NotImplementedError):
-            self.op.append(None)
-
-    def test_trace_stub(self):
-        with self.assertRaises(NotImplementedError):
-            self.op.trace(None)
+    def test_append_trace(self):
+        s1 = self.op.append({"act": "一"})
+        s2 = self.op.append({"act": "二"})
+        self.assertEqual(s2, s1 + 1)
+        entry = self.op.trace(s2)
+        self.assertEqual(entry["prev"], self.op.trace(s1)["hash"])
+        with self.assertRaises(KeyError):
+            self.op.trace(99)
 
 
 if __name__ == "__main__":
